@@ -2,6 +2,7 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actionCreators } from '../store/ContactUs';
+import WallClock from './WallClock';
 
 class ContactUs extends Component {
 
@@ -39,6 +40,7 @@ render() {
   console.log(this.state);
     return (
       <div>
+            <WallClock />
             <h1>Contact Us</h1>
             <form onSubmit={this.handleSubmit}>
                 {this.renderSendMessage()}
