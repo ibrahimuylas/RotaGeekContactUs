@@ -15,10 +15,11 @@ namespace RGContactUs.Tests
         {
             // Arrange
             var mockRepo = new Mock<IContactUsService>();
-            mockRepo.Setup(repo => repo.GetByIdAsync(1)).Returns(GetFirstBook());
+            mockRepo.Setup(repo => repo.AddAsync(GetFirstBook()));
+
             var controller = new ContactUsController(mockRepo.Object);
 
-            //Act
+                 //Act
             var result = controller.Get(1);
 
             //Assert
@@ -28,9 +29,9 @@ namespace RGContactUs.Tests
 
         }
 
-        private async Task<ContactUsModel> GetFirstBook()
+        private ContactUsModel GetFirstBook()
         {
-            return await Task.FromResult<ContactUsModel>(new ContactUsModel() { Name = "Ibrahim Uylas 1", Email = "ibrahim@uylas.net", Message = "Hi there" });
+            return new ContactUsModel() { Name = "Ibrahim Uylas 1", Email = "ibrahim@uylas.net", Message = "Hi there" };
         }
     }
 }
