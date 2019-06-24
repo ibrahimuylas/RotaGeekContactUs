@@ -26,14 +26,22 @@ namespace RGContactUs.Service
         {
             if (!RGValidator.IsValidEmail(model.Email))
             {
-                throw new Exception("Please enter a valid email.");
+                throw new InvalidDataException("Please enter a valid email.");
+            }
+            if (string.IsNullOrWhiteSpace(model.Name))
+            {
+                throw new InvalidDataException("Please enter your name.");
+            }
+            if (string.IsNullOrWhiteSpace(model.Message))
+            {
+                throw new InvalidDataException("Please enter message.");
             }
 
             ContactUs contactUs = mapper.Map<ContactUsModel, ContactUs>(model);
             await repository.AddAsync(contactUs);
             return contactUs.Id;
         }
-        
+
         public async Task<IList<ContactUsModel>> GetAllAsync()
         {
             return mapper.Map<IList<ContactUs>, IList<ContactUsModel>>(await repository.GetAllAsync());

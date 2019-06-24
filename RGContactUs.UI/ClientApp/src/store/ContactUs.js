@@ -9,10 +9,10 @@ export const actionCreators = {
 
     dispatch({ type: requestContactUsType, name, email, message });
 
-    await axios.post('https://localhost:5001/api/contactus/add', {name, email, message})
+    await axios.post('http://localhost:5001/api/contactus/add', {name, email, message})
       .then(response => {
           dispatch({ type: receiveContactUsType, hasSent: true});
-        }).catch(err => {
+      }).catch(err => {
            if(err.response !== undefined && err.response.status !== undefined && err.response.status === 500)
                dispatch({ type: receiveContactUsType, errorMessage: err.response.data });
           else
@@ -23,8 +23,6 @@ export const actionCreators = {
 };
 
 export const reducer = (state = initialState, action) => {
-    console.log('burada');
-    console.log(action.type);
 
   if (action.type === requestContactUsType) {
     return {

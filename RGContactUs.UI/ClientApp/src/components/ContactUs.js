@@ -37,7 +37,7 @@ class ContactUs extends Component {
     }
 
 render() {
-  console.log(this.state);
+  
     return (
       <div>
             <WallClock />
@@ -47,15 +47,15 @@ render() {
                 {this.renderErrorMessage()}
                 <div className="form-group">
                     <label htmlFor="name">Name</label>
-                    <input type="text" className="form-control" id="name" ref="name" defaultValue={this.props.name} />
+                    <input type="text" className="form-control" id="name" ref="name" defaultValue={this.props.name} required />
                 </div>
                 <div className="form-group">
                     <label htmlFor="email">Email</label>
-                    <input type="email" className="form-control" id="email" ref="email" placeholder="example@example.com" defaultValue={this.props.email} />
+                    <input type="email" className="form-control" id="email" ref="email" placeholder="example@example.com" defaultValue={this.props.email} required />
                 </div>
                 <div className="form-group">
                     <label htmlFor="message">Message</label>
-                    <textarea className="form-control" id="message" ref="message" rows="3" defaultValue={this.props.message} ></textarea>
+                    <textarea className="form-control" id="message" ref="message" rows="3" defaultValue={this.props.message} required ></textarea>
                 </div>
                 <button type="submit" className="btn btn-outline-primary">Submit</button>
             </form>

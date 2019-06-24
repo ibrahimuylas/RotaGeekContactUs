@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 using RGContactUs.API.Controllers;
 using RGContactUs.Core.Service;
@@ -11,27 +12,36 @@ namespace RGContactUs.Tests
     public class ContactUsControllerTest
     {
         [Fact]
-        public void TestFirstContactUs()
+        public async Task Post_CheckServiceCalled_ReturnsTrue()
         {
             // Arrange
-            var mockRepo = new Mock<IContactUsService>();
-            mockRepo.Setup(repo => repo.AddAsync(GetFirstBook()));
+            var mockContactUsService = new Mock<IContactUsService>();
+            mockContactUsService.Setup(service => service.AddAsync(It.IsAny<ContactUsModel>())).ReturnsAsync(await Task.FromResult(1));
 
-            var controller = new ContactUsController(mockRepo.Object);
-
-                 //Act
-            var result = controller.Get(1);
-
-            //Assert
-            var viewResult = Assert.IsType<ContactUsModel>(result);
-            var model = Assert.IsAssignableFrom<ContactUsModel>(viewResult);
-            Assert.Equal("Ibrahim Uylas", model.Name);
-
+            ContactUsModel contactUsModel = new ContactUsModel();
+            var controller = new ContactUsController(mockContactUsService.Object);
+            //Act
+            await controller.Post(contactUsModel);
+            mockContactUsService.Verify(x => x.AddAsync(It.IsAny<ContactUsModel>()), Times.Once);
         }
 
-        private ContactUsModel GetFirstBook()
+        [Theory]
+        [InlineData("a.b@abc.com", "", "")]
+        [InlineData("a.b@abc1.com", "ibrahim", "hi there")]
+        [InlineData("a.b@abc2.com", "ahmet kural", "")]
+        public async Task Post_ValidModel_ReturnsOkResultAsync(string email, string name, string message)
         {
-            return new ContactUsModel() { Name = "Ibrahim Uylas 1", Email = "ibrahim@uylas.net", Message = "Hi there" };
+            // Arrange
+            var mockContactUsService = new Mock<IContactUsService>();
+            mockContactUsService.Setup(service => service.AddAsync(It.IsAny<ContactUsModel>())).ReturnsAsync(await Task.FromResult(1));
+
+            ContactUsModel contactUsModel = new ContactUsModel() { Email = email, Name = name, Message = message };
+            var controller = new ContactUsController(mockContactUsService.Object);
+            //Act
+            var result = await controller.Post(contactUsModel);
+
+            //Assert
+            Assert.IsType<OkResult>(result);
         }
     }
 }

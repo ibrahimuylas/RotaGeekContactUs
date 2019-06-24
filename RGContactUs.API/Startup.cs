@@ -40,7 +40,7 @@ namespace RGContactUs.API
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder =>
                 {
-                    builder.WithOrigins("http://localhost:4200")
+                    builder.WithOrigins("https://localhost:4200", "https://localhost:44389")
                                         .AllowAnyHeader()
                                         .AllowAnyMethod()
                                         .AllowAnyOrigin()

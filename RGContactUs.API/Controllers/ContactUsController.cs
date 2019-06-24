@@ -33,9 +33,14 @@ namespace RGContactUs.API.Controllers
         }
 
         [HttpPost("add")]
-        public async Task Post([FromBody] ContactUsModel model)
+        public async Task<IActionResult> Post([FromBody] ContactUsModel model)
         {
-            await _service.AddAsync(model);
+            int id = await _service.AddAsync(model);
+            if (id > 0)
+            {
+                return Ok();
+            }
+            else return BadRequest();
         }
 
     }
